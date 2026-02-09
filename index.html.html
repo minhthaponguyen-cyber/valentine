@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>💖 quà Valentine</title>
+
+<style>
+:root{
+  --pink:#ff5fa2;
+  --pink-soft:#ff9fc9;
+  --bg-dark:#000;
+  --bg-deep:#120008;
+  --glass:rgba(255,255,255,.08);
+  --blur:blur(20px);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+  background:var(--bg-dark);
+  color:#fff;
+}
+
+.scene{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  padding:20px;
+}
+
+.scene.active{
+  display:flex;
+}
+
+.fade-in{
+  animation:fadeIn 1.2s ease forwards;
+}
+.fade-up{
+  animation:fadeUp 1.2s ease forwards;
+}
+.zoom-in{
+  animation:zoomIn 1.2s ease forwards;
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes zoomIn{
+  from{opacity:0;transform:scale(.85)}
+  to{opacity:1;transform:scale(1)}
+}
+
+.btn{
+  margin-top:25px;
+  padding:14px 34px;
+  border-radius:40px;
+  border:none;
+  background:linear-gradient(45deg,var(--pink),#ff2f7a);
+  color:#fff;
+  font-size:16px;
+  font-weight:500;
+  box-shadow:0 0 30px #ff5fa255;
+  transition:.3s;
+  cursor:pointer;
+}
+.btn:active{
+  transform:scale(.95);
+}
+
+.bg-stars{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  z-index:-1;
+}
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:#fff;
+  border-radius:50%;
+  opacity:.6;
+  animation:starMove linear infinite;
+}
+@keyframes starMove{
+  from{transform:translateY(0)}
+  to{transform:translateY(120vh)}
+}
+
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:18px;
+  animation:heartFly linear infinite;
+  opacity:.8;
+}
+@keyframes heartFly{
+  from{
+    transform:translateY(0) scale(.8);
+    opacity:0;
+  }
+  10%{opacity:1}
+  to{
+    transform:translateY(-120vh) scale(1.4);
+    opacity:0;
+  }
+}
+
+/* LOVE BOOK 3D */
+.book{
+  position:relative;
+  width:260px;
+  height:180px;
+  perspective:1200px;
+}
+.page{
+  position:absolute;
+  inset:0;
+  background:#2a0012;
+  border-radius:10px;
+  box-shadow:0 20px 50px #ff5fa233;
+  transform-origin:left;
+  transition:1.2s;
+}
+.page.left{
+  background:#18000a;
+}
+.page.right{
+  transform:rotateY(-160deg);
+  padding:20px;
+}
+.book.open .right{
+  transform:rotateY(0deg);
+}
+.page h3{
+  margin-bottom:10px;
+}
+.page p{
+  font-size:14px;
+  line-height:1.6;
+  opacity:.85;
+}
+.hint{
+  position:absolute;
+  bottom:15px;
+  right:20px;
+  font-size:12px;
+  opacity:.6;
+}
+
+/* TIMELINE */
+.time-box{
+  display:flex;
+  gap:20px;
+  margin-top:30px;
+}
+.time-box div{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
+  padding:18px 22px;
+  border-radius:16px;
+  min-width:80px;
+}
+.time-box span{
+  font-size:28px;
+  color:var(--pink);
+}
+.time-box small{
+  display:block;
+  font-size:12px;
+  opacity:.7;
+}
+
+/* HEART SCENE */
+.heart-bg{
+  background:radial-gradient(circle at center,#300014,#000);
+  overflow:hidden;
+}
+
+.heart-bg::before{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  background:
+    radial-gradient(circle,#ff5fa233 0%,transparent 60%),
+    conic-gradient(from 0deg,#ff2f7a55,#ff9fc955,#ff2f7a55);
+  animation:auraSpin 14s linear infinite;
+  filter:blur(45px);
+  z-index:0;
+}
+@keyframes auraSpin{
+  from{transform:rotate(0)}
+  to{transform:rotate(360deg)}
+}
+
+#threeHeart{
+  width:320px;
+  height:320px;
+  filter:drop-shadow(0 0 35px #ff5fa2);
+}
+
+.heart-ui{
+  margin-top:22px;
+  text-align:center;
+}
+
+.heart-text{
+  font-size:18px;
+  color:#ff9fc9;
+  text-shadow:0 0 18px #ff5fa2;
+}
+
+/* FIREWORK SCENE */
+#scene-firework{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg, rgba(255,95,162,.15) 0%, rgba(30,0,15,.5) 50%, #000 100%);
+}
+
+#scene-firework::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(circle,#ff5fa233 0%,transparent 60%),
+    conic-gradient(
+      from 0deg,
+      rgba(255,95,162,.45),
+      rgba(255,255,255,.2),
+      rgba(255,95,162,.45)
+    );
+  animation:fireAura 18s linear infinite;
+  filter:blur(65px);
+  z-index:0;
+}
+
+@keyframes fireAura{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+#scene-firework {
+    position: relative;
+    z-index: 1;
+}
+
+.fire-text {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes namePulse{
+  0%,100%{
+    transform:scale(1);
+    box-shadow:0 0 30px #ff5fa255;
+  }
+  50%{
+    transform:scale(1.08);
+    box-shadow:0 0 70px #ff5fa299;
+  }
+}
+
+@keyframes nameHeartFly{
+  from{
+    transform:translateY(0) scale(.6);
+    opacity:0;
+  }
+  20%{opacity:1}
+  to{
+    transform:translateY(-120px) scale(1.4);
+    opacity:0;
+  }
+}
+
+/* SECRET SCENE */
+.secret-bg{
+  background:linear-gradient(135deg, #300014 0%, #120008 50%, #000 100%);
+  overflow:hidden;
+}
+
+.secret-bg::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(255,95,162,.35),
+      rgba(255,255,255,.15),
+      rgba(255,95,162,.35)
+    );
+  animation:secretAura 20s linear infinite;
+  filter:blur(70px);
+  z-index:0;
+}
+
+@keyframes secretAura{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+#scene-secret h2,
+#scene-secret input,
+#scene-secret button,
+#scene-secret p{
+  position:relative;
+  z-index:2;
+}
+
+#scene-secret input{
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  box-shadow:0 0 25px #ff5fa255;
+  outline:none;
+  margin-top:20px;
+  padding:12px 20px;
+  border-radius:30px;
+  border:none;
+  text-align:center;
+  width:220px;
+  font-size:16px;
+}
+
+#secretMsg{
+  margin-top:15px;
+  text-shadow:0 0 20px #ff5fa2;
+}
+
+.shake{
+  animation:shake .4s;
+}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
+}
+
+/* FLOWER BLOOM */
+.flower-wrap{
+  position:relative;
+  width:220px;
+  height:220px;
+  animation:flowerAppear 2s forwards;
+}
+
+@keyframes flowerAppear{
+  from{transform:scale(.3);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+.flower-core{
+  position:absolute;
+  inset:90px;
+  background:radial-gradient(circle,#fff,#ff9fc9);
+  border-radius:50%;
+  box-shadow:0 0 40px #ff9fc9;
+  z-index:5;
+}
+
+.petal-layer{
+  position:absolute;
+  inset:0;
+}
+
+.petal-layer span{
+  position:absolute;
+  width:90px;
+  height:140px;
+  background:radial-gradient(circle at top,#ff9fc9,#ff2f7a);
+  border-radius:50% 50% 40% 40%;
+  left:50%;
+  top:10px;
+  transform-origin:50% 100%;
+  transform:rotate(calc(var(--i)*60deg)) scale(0);
+  animation:bloomPetal 2s forwards;
+  animation-delay:var(--d);
+  box-shadow:0 0 30px #ff5fa255;
+}
+
+.layer1 span{ --d:0.3s }
+.layer2 span{ --d:0.8s }
+.layer3 span{ --d:1.3s }
+
+.petal-layer span:nth-child(1){--i:0}
+.petal-layer span:nth-child(2){--i:1}
+.petal-layer span:nth-child(3){--i:2}
+.petal-layer span:nth-child(4){--i:3}
+.petal-layer span:nth-child(5){--i:4}
+.petal-layer span:nth-child(6){--i:5}
+
+@keyframes bloomPetal{
+  to{
+    transform:rotate(calc(var(--i)*60deg)) scale(1);
+  }
+}
+
+.flower-text{
+  margin-top:30px;
+  font-size:18px;
+  opacity:.85;
+}
+
+/* ALBUM */
+.album{
+  display:flex;
+  gap:20px;
+  overflow-x:auto;
+  padding:20px;
+  max-width:280px;
+  margin-top:20px;
+}
+
+.album-item{
+  width:220px;
+  height:160px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  flex-shrink:0;
+  cursor:pointer;
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+  position:relative;
+  overflow:hidden;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.album-item:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(255,95,162,0.6);
+}
+
+.album-item.photo1{
+  background:linear-gradient(135deg,#ff5fa2,#ff9fc9);
+}
+
+.album-item.photo2{
+  background:linear-gradient(135deg,#ff9fc9,#ff5fa2);
+}
+
+.album-item.photo3{
+  background:linear-gradient(135deg,#ff2f7a,#ff9fc9);
+}
+
+/* IMAGE MESSAGE MODAL */
+.image-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  backdrop-filter:blur(5px);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  animation:fadeIn 0.3s ease;
+}
+
+.image-modal.active{
+  display:flex;
+}
+
+.image-modal-content{
+  background:linear-gradient(135deg, rgba(255,95,162,0.2), rgba(255,159,201,0.2));
+  border:2px solid #ff5fa2;
+  border-radius:20px;
+  padding:30px;
+  max-width:320px;
+  text-align:center;
+  box-shadow:0 0 50px rgba(255,95,162,0.4);
+  animation:zoomIn 0.4s ease;
+}
+
+.image-modal h3{
+  font-size:20px;
+  margin-bottom:15px;
+  color:#ff9fc9;
+  text-shadow:0 0 10px #ff5fa2;
+}
+
+.image-modal p{
+  font-size:14px;
+  line-height:1.8;
+  opacity:0.9;
+  margin-bottom:20px;
+}
+
+.image-modal-close{
+  background:linear-gradient(45deg,#ff5fa2,#ff2f7a);
+  border:none;
+  padding:10px 25px;
+  border-radius:25px;
+  color:#fff;
+  cursor:pointer;
+  font-size:14px;
+  transition:transform 0.3s ease;
+}
+
+.image-modal-close:hover{
+  transform:scale(1.05);
+}
+
+/* ALBUM BACKGROUND - FIXED */
+#scene-album{
+  background:linear-gradient(135deg, rgba(48,0,20,0.8) 0%, rgba(18,0,8,0.8) 50%, #000 100%);
+  position:relative;
+  overflow:hidden;
+  z-index:1;
+}
+
+#scene-album::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(circle,rgba(255,95,162,0.15) 0%,transparent 60%),
+    conic-gradient(
+      from 0deg,
+      rgba(255,95,162,0.25),
+      rgba(255,159,201,0.15),
+      rgba(255,95,162,0.25)
+    );
+  animation:albumAura 22s linear infinite;
+  filter:blur(60px);
+  z-index:-1;
+  pointer-events:none;
+}
+
+@keyframes albumAura{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+#scene-album h2{
+  position:relative;
+  z-index:2;
+}
+
+#scene-album .album{
+  position:relative;
+  z-index:2;
+}
+
+/* ENDING BACKGROUND - FIXED */
+#scene-ending{
+  background:linear-gradient(135deg, rgba(48,0,20,0.9) 0%, rgba(18,0,8,0.95) 50%, #000 100%);
+  position:relative;
+  overflow:hidden;
+  z-index:1;
+}
+
+#scene-ending::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(circle,rgba(255,95,162,0.2) 0%,transparent 60%),
+    conic-gradient(
+      from 0deg,
+      rgba(255,95,162,0.35),
+      rgba(255,255,255,0.1),
+      rgba(255,95,162,0.35)
+    );
+  animation:endingAura 16s linear infinite;
+  filter:blur(70px);
+  z-index:-1;
+  pointer-events:none;
+}
+
+@keyframes endingAura{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+#scene-ending h1,
+#scene-ending p,
+#scene-ending .btn{
+  position:relative;
+  z-index:2;
+}
+/* ===== FIX BACKGROUND HOLE / SEAM ===== */
+
+/* Body luôn có nền đệm */
+html, body{
+  background:#050005;
+}
+
+/* Scene phải tự gánh nền, không để hở body */
+.scene{
+  min-height:100vh;
+  width:100%;
+  overflow:hidden;
+  transform:translateZ(0);
+  backface-visibility:hidden;
+}
+
+/* Fix riêng scene album (chỗ bị lủng) */
+#scene-album{
+  background:
+    radial-gradient(circle at center,
+      rgba(255,95,162,.25) 0%,
+      rgba(40,0,25,.85) 55%,
+      #050005 100%);
+}
+
+/* Vá seam 1px do blur + transform */
+#scene-album::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:inherit;
+  z-index:-2;
+}
+
+/* Fix cho tất cả scene có ::before blur */
+.scene::before{
+  will-change:transform;
+}
+.album-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:16px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg-stars" id="stars"></div>
+
+<!-- PART 1: INTRO -->
+<div id="scene-intro" class="scene active" style="background:radial-gradient(circle,#300014,#000)">
+  <h1 class="fade-in">💖 quà Valentine</h1>
+  <p class="fade-up" style="margin-top:20px;opacity:.8">
+    Một điều đặc biệt… đang được chuẩn bị
+  </p>
+  <div style="margin-top:30px;width:220px;height:6px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden">
+    <div id="loadingBar" style="width:0;height:100%;background:linear-gradient(90deg,var(--pink),#ff2f7a);transition:1s"></div>
+  </div>
+</div>
+
+<!-- PART 2: START -->
+<div id="scene-start" class="scene" style="background:var(--bg-deep)">
+  <h2 class="zoom-in">Chạm để bắt đầu 💗</h2>
+  <p style="margin-top:15px;opacity:.7">Câu chuyện này chỉ dành cho một người</p>
+  <button class="btn">Bắt đầu</button>
+</div>
+
+<!-- PART 3: MESSAGE -->
+<div id="scene-message" class="scene" style="background:linear-gradient(#000,#160010)">
+  <h2 id="typingText"></h2>
+  <p style="margin-top:20px;opacity:.7">(chạm để tiếp tục)</p>
+</div>
+
+<!-- PART 4: BOOK -->
+<div id="scene-book" class="scene" style="background:radial-gradient(circle,#200010,#000)">
+  <div class="book">
+    <div class="page left"></div>
+    <div class="page right">
+      <h3>📖 Câu chuyện của chúng ta</h3>
+      <p>
+        Không phải là định mệnh…<br>
+        Mà là lựa chọn mỗi ngày<br>
+        Để yêu nhau 💖
+      </p>
+      <span class="hint">vuốt sang ➜</span>
+    </div>
+  </div>
+</div>
+
+<!-- PART 5: TIMELINE -->
+<div id="scene-time" class="scene" style="background:linear-gradient(#000,#180010)">
+  <h2>⏳ Chúng ta đã bên nhau</h2>
+  <div class="time-box">
+    <div><span id="dayCount">0</span><small>Ngày</small></div>
+    <div><span id="hourCount">0</span><small>Giờ</small></div>
+    <div><span id="minCount">0</span><small>Phút</small></div>
+  </div>
+  <p style="margin-top:25px;opacity:.7">(chạm để tiếp)</p>
+</div>
+
+<!-- PART 6: FIREWORK -->
+<div id="scene-firework" class="scene">
+  <canvas id="fireCanvas"></canvas>
+  <h2 class="fire-text">💖 NGỌC ÁNH 💖</h2>
+  <p style="margin-top:20px;opacity:.7;position:relative;z-index:3">(chạm để tiếp)</p>
+</div>
+
+<!-- PART 7: HEART 3D -->
+<div id="scene-heart3d" class="scene heart-bg">
+  <canvas id="threeHeart"></canvas>
+  <div class="heart-ui">
+    <p class="heart-text">💓 Trái tim này… là của em</p>
+    <small>chạm & kéo để xoay</small>
+  </div>
+</div>
+
+<!-- PART 8: SECRET -->
+<div id="scene-secret" class="scene secret-bg">
+  <h2>🔐 Chỉ cdàng mới mở được</h2>
+  <input id="secretInput" placeholder="Tên mà anh gọi em">
+  <button class="btn" id="secretBtn">Mở khóa</button>
+  <p id="secretMsg"></p>
+</div>
+
+<!-- PART 9: FLOWER -->
+<div id="scene-flower" class="scene" style="background:radial-gradient(circle,#250015,#000)">
+  <div class="flower-wrap">
+    <div class="flower-core"></div>
+    <div class="petal-layer layer1">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="petal-layer layer2">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="petal-layer layer3">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <p class="flower-text">🌸 Hoa này nở… vì em 🌸</p>
+</div>
+
+<!-- PART 10: ALBUM -->
+<div id="scene-album" class="scene">
+  <h2>🖼 ảnh cdàng</h2>
+  <div class="album">
+    <div class="album-item" data-image="1">
+  <img src="imag1.jpg" alt="Ảnh 1">
+</div>
+<div class="album-item" data-image="2">
+  <img src="imag2.jpg" alt="Ảnh 2">
+</div>
+<div class="album-item" data-image="3">
+  <img src="imag3.jpg" alt="Ảnh 3">
+</div>
+
+  </div>
+  <p style="opacity:.6;margin-top:15px;position:relative;z-index:2">(chạm ảnh để xem lời nhắn)</p>
+</div>
+
+<!-- IMAGE MESSAGE MODAL -->
+<div id="imageModal" class="image-modal">
+  <div class="image-modal-content">
+    <h3 id="modalTitle">📸 Ảnh 1</h3>
+    <p id="modalMessage">Đây là những tấm ảnh cte của cdàng...</p>
+    <button class="image-modal-close" onclick="closeImageModal()">Đóng</button>
+  </div>
+</div>
+
+<!-- PART 11: ENDING -->
+<div id="scene-ending" class="scene">
+  <h1>💖 Anh yêu em</h1>
+  <p style="margin-top:15px;opacity:.8">
+    Cảm ơn vì đã ở lại đến cuối
+  </p>
+  <button class="btn" onclick="location.reload()">Xem lại từ đầu</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<script>
+/* ===== IMAGE MESSAGES DATABASE ===== */
+const imageMessages={
+  1:{title:"📸 Ảnh 1 - Lần gặp đầu tiên",message:"Khoảnh khắc này luôn mãi sống trong tim anh. Nụ cười của em là nguồn sáng trong cuộc sống anh. 💖"},
+  2:{title:"📸 Ảnh 2 - Khoảnh khắc bình yên",message:"Những lúc bình yên như thế này, anh cảm thấy tất cả đều có ý nghĩa. Vì em, mọi điều trở nên hoàn hảo. 💕"},
+  3:{title:"📸 Ảnh 3 - Tương lai chúng ta",message:"Anh mong chúng ta còn rất nhiều khoảnh khắc để sống, để yêu nhau. Em là người anh chọn mãi mãi. 💗"}
+};
+
+function openImageModal(imageNum){
+  const modal=document.getElementById("imageModal");
+  const data=imageMessages[imageNum];
+  document.getElementById("modalTitle").innerText=data.title;
+  document.getElementById("modalMessage").innerText=data.message;
+  modal.classList.add("active");
+}
+
+function closeImageModal(){
+  const modal=document.getElementById("imageModal");
+  modal.classList.remove("active");
+}
+
+// Close modal when clicking outside
+document.getElementById("imageModal").addEventListener("click",function(e){
+  if(e.target===this){
+    closeImageModal();
+  }
+});
+
+/* ===== STARS ===== */
+const starBox=document.getElementById("stars");
+for(let i=0;i<120;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*120+"vh";
+  s.style.animationDuration=5+Math.random()*10+"s";
+  starBox.appendChild(s);
+}
+
+/* ===== HEARTS ===== */
+function spawnHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=6+Math.random()*6+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),12000);
+}
+setInterval(spawnHeart,800);
+
+/* ===== SCENES ===== */
+const scenes={
+  intro:document.getElementById("scene-intro"),
+  start:document.getElementById("scene-start"),
+  message:document.getElementById("scene-message"),
+  book:document.getElementById("scene-book"),
+  time:document.getElementById("scene-time"),
+  firework:document.getElementById("scene-firework"),
+  heart3d:document.getElementById("scene-heart3d"),
+  secret:document.getElementById("scene-secret"),
+  flower:document.getElementById("scene-flower"),
+  album:document.getElementById("scene-album"),
+  ending:document.getElementById("scene-ending")
+};
+
+function show(scene){
+  Object.values(scenes).forEach(s=>s.classList.remove("active"));
+  scenes[scene].classList.add("active");
+}
+
+/* ===== LOADING ===== */
+let load=0;
+const bar=document.getElementById("loadingBar");
+const loader=setInterval(()=>{
+  load+=20;
+  bar.style.width=load+"%";
+  if(load>=100){
+    clearInterval(loader);
+    setTimeout(()=>show("start"),600);
+  }
+},500);
+
+/* ===== START BUTTON ===== */
+document.querySelector("#scene-start .btn").addEventListener("click",()=>{
+  show("message");
+  typeWriter();
+});
+
+/* ===== TYPEWRITER ===== */
+const text="Chào em… 💕\nAnh có điều này muốn nói với cdàng.";
+let index=0;
+function typeWriter(){
+  if(index<text.length){
+    const typingText=document.getElementById("typingText");
+    typingText.innerHTML+=text[index]==="\n"?"<br>":text[index];
+    index++;
+    setTimeout(typeWriter,80);
+  }
+}
+
+/* ===== MESSAGE → BOOK ===== */
+scenes.message.addEventListener("click",()=>{
+  show("book");
+  setTimeout(()=>document.querySelector(".book").classList.add("open"),300);
+});
+
+/* ===== BOOK → TIMELINE ===== */
+scenes.book.addEventListener("click",()=>{
+  show("time");
+});
+
+/* ===== TIMELINE COUNTER ===== */
+const loveStart=new Date("2025-10-25T00:00:00");
+
+function updateTime(){
+  const now=new Date();
+  const diff=now-loveStart;
+  document.getElementById("dayCount").innerText=Math.floor(diff/86400000);
+  document.getElementById("hourCount").innerText=Math.floor(diff/3600000)%24;
+  document.getElementById("minCount").innerText=Math.floor(diff/60000)%60;
+}
+setInterval(updateTime,1000);
+updateTime();
+
+/* ===== FIREWORK ===== */
+const fwCanvas=document.getElementById("fireCanvas");
+const ctx=fwCanvas.getContext("2d");
+let fwParticles=[];
+
+function resizeFW(){
+  fwCanvas.width=window.innerWidth;
+  fwCanvas.height=window.innerHeight;
+}
+resizeFW();
+window.addEventListener("resize",resizeFW);
+
+function spawnFirework(){
+  const x=Math.random()*fwCanvas.width;
+  const y=Math.random()*fwCanvas.height/2;
+  for(let i=0;i<80;i++){
+    fwParticles.push({
+      x,y,
+      vx:(Math.random()-.5)*6,
+      vy:(Math.random()-.5)*6,
+      life:60
+    });
+  }
+}
+
+function animateFW(){
+  ctx.clearRect(0,0,fwCanvas.width,fwCanvas.height);
+  fwParticles.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.life--;
+    ctx.fillStyle="rgba(255,95,162,.8)";
+    ctx.fillRect(p.x,p.y,2,2);
+    if(p.life<=0) fwParticles.splice(i,1);
+  });
+  requestAnimationFrame(animateFW);
+}
+
+function initFirework(){
+  fwParticles=[];
+  setInterval(spawnFirework,800);
+  animateFW();
+}
+
+/* ===== TIMELINE → FIREWORK ===== */
+scenes.time.addEventListener("click",()=>{
+  show("firework");
+  initFirework();
+});
+
+/* ===== NAME HEARTS ===== */
+function spawnNameHeart(){
+  const h=document.createElement("div");
+  h.innerText="💖";
+  h.style.position="absolute";
+  h.style.left=45+Math.random()*10+"%";
+  h.style.top=55+Math.random()*10+"%";
+  h.style.fontSize=12+Math.random()*10+"px";
+  h.style.opacity=.7;
+  h.style.animation="nameHeartFly 4s linear forwards";
+  h.style.zIndex=3;
+  scenes.firework.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+}
+setInterval(spawnNameHeart,600);
+
+/* ===== FIREWORK → HEART 3D ===== */
+scenes.firework.addEventListener("click",()=>{
+  show("heart3d");
+  initHeart3D();
+});
+
+/* ===== THREE.JS HEART ===== */
+let scene3D,camera3D,renderer3D;
+let heart;
+let isDragging=false,lastX=0,lastY=0;
+let rotX=0,rotY=0;
+
+function initHeart3D(){
+  const canvas=document.getElementById("threeHeart");
+
+  scene3D=new THREE.Scene();
+  camera3D=new THREE.PerspectiveCamera(45,canvas.clientWidth/canvas.clientHeight,0.1,100);
+  camera3D.position.z=6;
+
+  renderer3D=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer3D.setSize(canvas.clientWidth,canvas.clientHeight);
+  renderer3D.setPixelRatio(Math.min(window.devicePixelRatio,2));
+
+  scene3D.add(new THREE.AmbientLight(0xff9fc9,1.4));
+
+  /* GALAXY */
+  const galaxyGroup=new THREE.Group();
+  scene3D.add(galaxyGroup);
+
+  const count=600;
+  const pos=new Float32Array(count*3);
+
+  for(let i=0;i<count;i++){
+    const a=Math.random()*Math.PI*2;
+    const r=1.6+Math.random()*0.6;
+    pos[i*3]=Math.cos(a)*r;
+    pos[i*3+1]=(Math.random()-.5)*0.3;
+    pos[i*3+2]=Math.sin(a)*r;
+  }
+
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
+
+  const mat=new THREE.PointsMaterial({
+    color:0xff9fc9,
+    size:0.03,
+    transparent:true,
+    blending:THREE.AdditiveBlending
+  });
+
+  const galaxy=new THREE.Points(geo,mat);
+  galaxyGroup.add(galaxy);
+
+  const light=new THREE.PointLight(0xff5fa2,2);
+  light.position.set(4,4,6);
+  scene3D.add(light);
+
+  /* HEART */
+  const shape=new THREE.Shape();
+  shape.moveTo(0,0);
+  shape.bezierCurveTo(0,0,-1.2,-1.2,-2.5,0);
+  shape.bezierCurveTo(-4,2.5,-1.5,4.8,0,6);
+  shape.bezierCurveTo(1.5,4.8,4,2.5,2.5,0);
+  shape.bezierCurveTo(1.2,-1.2,0,0,0,0);
+
+  const geometry=new THREE.ExtrudeGeometry(shape,{
+    depth:1.2,
+    bevelEnabled:true,
+    bevelSize:.3,
+    bevelThickness:.4,
+    bevelSegments:8
+  });
+
+  const material=new THREE.MeshStandardMaterial({
+    color:0xff5fa2,
+    metalness:.4,
+    roughness:.2,
+    emissive:0x330011
+  });
+
+  heart=new THREE.Mesh(geometry,material);
+  heart.rotation.x=Math.PI;
+  heart.scale.set(.35,.35,.35);
+  scene3D.add(heart);
+
+  /* DRAG */
+  canvas.addEventListener("pointerdown",e=>{
+    isDragging=true;
+    lastX=e.clientX;
+    lastY=e.clientY;
+  });
+
+  window.addEventListener("pointerup",()=>isDragging=false);
+
+  window.addEventListener("pointermove",e=>{
+    if(!isDragging) return;
+    const dx=e.clientX-lastX;
+    const dy=e.clientY-lastY;
+    rotY+=dx*0.005;
+    rotX+=dy*0.005;
+    heart.rotation.y=rotY;
+    heart.rotation.x=rotX;
+    lastX=e.clientX;
+    lastY=e.clientY;
+  });
+
+  /* ANIMATE */
+  function animateHeart(){
+    requestAnimationFrame(animateHeart);
+    if(!isDragging){
+      heart.rotation.y+=0.005;
+    }
+    galaxyGroup.rotation.y+=0.002;
+    renderer3D.render(scene3D,camera3D);
+  }
+  animateHeart();
+}
+
+/* ===== HEART 3D → SECRET ===== */
+scenes.heart3d.addEventListener("click",()=>{
+  show("secret");
+});
+
+/* ===== SECRET PASSWORD ===== */
+const SECRET_NAME="cdàng";
+document.getElementById("secretBtn").addEventListener("click",()=>{
+  if(document.getElementById("secretInput").value.toLowerCase().trim()===SECRET_NAME){
+    document.getElementById("secretMsg").innerText="💖 Đúng rồi cdàng…";
+    setTimeout(()=>show("flower"),800);
+  }else{
+    document.getElementById("secretMsg").innerText="❌ Sai rồi cdàng…";
+    document.getElementById("secretInput").classList.add("shake");
+    setTimeout(()=>document.getElementById("secretInput").classList.remove("shake"),400);
+  }
+});
+
+/* ===== FLOWER → ALBUM ===== */
+scenes.flower.addEventListener("click",()=>{
+  show("album");
+});
+
+/* ===== ALBUM IMAGE CLICK HANDLER ===== */
+document.querySelectorAll(".album-item").forEach(item=>{
+  item.addEventListener("click",function(){
+    const imageNum=this.getAttribute("data-image");
+    openImageModal(imageNum);
+  });
+});
+
+/* ===== ALBUM → ENDING ===== */
+scenes.album.addEventListener("click",function(e){
+  // Only navigate if clicking on the background text, not the images
+  if(e.target===this){
+    show("ending");
+  }
+});
+
+// Alternative: Click anywhere in album area after a delay
+setTimeout(()=>{
+  const albumText=document.querySelector("#scene-album p");
+  if(albumText){
+    albumText.style.cursor="pointer";
+    albumText.addEventListener("click",()=>{
+      show("ending");
+    });
+  }
+},1000);
+
+/* ===== VIBRATION ===== */
+function vibrateLove(){
+  if(navigator.vibrate){
+    navigator.vibrate([80,40,80]);
+  }
+}
+
+["start","book","heart3d","ending"].forEach(k=>{
+  if(scenes[k]){
+    scenes[k].addEventListener("touchstart",vibrateLove);
+  }
+});
+
+/* ===== TOUCH SWIPE ===== */
+let startX=0;
+document.addEventListener("touchstart",e=>{
+  startX=e.touches[0].clientX;
+});
+document.addEventListener("touchend",e=>{
+  const endX=e.changedTouches[0].clientX;
+  if(startX-endX>60 && scenes.book.classList.contains("active")){
+    show("time");
+  }
+});
+</script>
+
+</body>
+</html>
